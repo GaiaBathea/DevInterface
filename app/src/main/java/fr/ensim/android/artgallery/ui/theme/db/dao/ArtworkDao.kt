@@ -5,8 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.artgallery.db.entity.ArtworkEntity
-import com.example.artgallery.db.relation.ArtworkWithArtist
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtworkEntity
+import fr.ensim.android.artgallery.ui.theme.db.relation.ArtworkWithArtist
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -35,4 +35,11 @@ interface ArtworkDao {
             "WHERE ar.name LIKE '%' || :query || '%' OR a.title LIKE '%' || :query || '%' OR " +
             "a.category LIKE '%' || :query || '%'")
     fun searchArtworks(query: String): Flow<List<ArtworkWithArtist>>
+
+    @Query("SELECT COUNT(*) FROM artworks")
+    suspend fun getArtworkCount(): Int
+
+    @Query("SELECT * FROM artworks WHERE category = :category LIMIT 20")
+    fun getArtworksByCategory(category: String): Flow<List<ArtworkWithArtist>>
+}
 }

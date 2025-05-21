@@ -2,8 +2,8 @@ package fr.ensim.android.artgallery.ui.theme.db.relation
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.example.artgallery.db.entity.ArtistEntity
-import com.example.artgallery.db.entity.ArtworkEntity
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtistEntity
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtworkEntity
 
 data class ArtworkWithArtist(
     @Embedded val artwork: ArtworkEntity,

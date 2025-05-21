@@ -1,17 +1,17 @@
-package com.example.artgallery
+package fr.ensim.android.artgallery
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.artgallery.adapter.ArtworkAdapter
-import com.example.artgallery.model.Artwork
-import com.example.artgallery.viewmodel.ArtViewModel
+import com.example.artgallery.ArtworkDetailActivity
+import fr.ensim.android.artgallery.ui.theme.adapter.ArtworkAdapter
+import fr.ensim.android.artgallery.ui.theme.model.Artwork
+import fr.ensim.android.artgallery.ui.theme.viewmodel.ArtViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView

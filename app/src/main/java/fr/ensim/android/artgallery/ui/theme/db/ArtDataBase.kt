@@ -7,11 +7,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.artgallery.db.dao.ArtistDao
-import com.example.artgallery.db.dao.ArtworkDao
-import com.example.artgallery.db.entity.ArtistEntity
-import com.example.artgallery.db.entity.ArtworkEntity
-import com.example.artgallery.db.typeconverters.Converters
+import fr.ensim.android.artgallery.ui.theme.db.dao.ArtistDao
+import fr.ensim.android.artgallery.ui.theme.db.dao.ArtworkDao
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtistEntity
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtworkEntity
+import fr.ensim.android.artgallery.ui.theme.db.typeconverters.Converters
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

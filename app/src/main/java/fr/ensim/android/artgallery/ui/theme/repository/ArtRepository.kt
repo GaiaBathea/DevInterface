@@ -1,10 +1,8 @@
 package fr.ensim.android.artgallery.ui.theme.repository
 
-import com.example.artgallery.db.dao.ArtistDao
-import com.example.artgallery.db.dao.ArtworkDao
-import com.example.artgallery.model.Artist
-import com.example.artgallery.model.Artwork
+import fr.ensim.android.artgallery.ui.theme.db.dao.ArtistDao
 import fr.ensim.android.artgallery.ui.theme.db.dao.ArtworkDao
+import fr.ensim.android.artgallery.ui.theme.model.Artwork
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -31,5 +29,3 @@ class ArtRepository(
 
     fun searchArtworks(query: String): Flow<List<Artwork>> {
         return artworkDao.searchArtworks(query)
-    }
-}

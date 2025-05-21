@@ -1,5 +1,6 @@
 package fr.ensim.android.artgallery.ui.theme.adapter
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.artgallery.R
-import com.example.artgallery.model.Artwork
+import fr.ensim.android.artgallery.ui.theme.model.Artwork
 
 class ArtworkAdapter(private val onItemClick: (Artwork) -> Unit) :
     ListAdapter<Artwork, ArtworkAdapter.ArtworkViewHolder>(ArtworkDiffCallback()) {
