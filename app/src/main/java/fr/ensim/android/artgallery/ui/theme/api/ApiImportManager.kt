@@ -4,6 +4,8 @@ import fr.ensim.android.artgallery.ui.theme.db.dao.ArtistDao
 import fr.ensim.android.artgallery.ui.theme.db.dao.ArtworkDao
 import fr.ensim.android.artgallery.ui.theme.db.entity.ArtistEntity
 import fr.ensim.android.artgallery.ui.theme.db.entity.ArtworkEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ApiImportManager(
     private val artistDao: ArtistDao,

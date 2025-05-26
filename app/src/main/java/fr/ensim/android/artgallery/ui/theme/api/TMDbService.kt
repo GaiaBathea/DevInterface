@@ -1,6 +1,9 @@
 package fr.ensim.android.artgallery.ui.theme.api
 
+import androidx.room.Query
+import fr.ensim.android.artgallery.ui.theme.api.data.tMDb.MovieDetails
 import fr.ensim.android.artgallery.ui.theme.api.data.tMDb.MovieResponse
+import fr.ensim.android.artgallery.ui.theme.api.data.tMDb.TvShowResponse
 
 interface TMDbService {
     @GET("movie/popular")

@@ -1,5 +1,9 @@
 package fr.ensim.android.artgallery.ui.theme.api
 
+import fr.ensim.android.artgallery.ui.theme.api.data.dDeezer.DeezerAlbum
+import fr.ensim.android.artgallery.ui.theme.api.data.dDeezer.DeezerArtist
+import fr.ensim.android.artgallery.ui.theme.api.data.dDeezer.DeezerChartResponse
+
 interface DeezerService {
     @GET("chart")
     suspend fun getCharts(): DeezerChartResponse

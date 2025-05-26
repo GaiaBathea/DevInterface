@@ -1,11 +1,11 @@
 package fr.ensim.android.artgallery.ui.theme.api
 
-import com.example.artgallery.model.Artist
-import com.example.artgallery.model.Artwork
-import com.example.artgallery.db.entity.ArtistEntity
-import com.example.artgallery.db.entity.ArtworkEntity
-import com.example.artgallery.db.dao.ArtistDao
-import com.example.artgallery.db.dao.ArtworkDao
+import fr.ensim.android.artgallery.ui.theme.model.Artist
+import fr.ensim.android.artgallery.ui.theme.model.Artwork
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtistEntity
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtworkEntity
+import fr.ensim.android.artgallery.ui.theme.db.dao.ArtistDao
+import fr.ensim.android.artgallery.ui.theme.db.dao.ArtworkDao
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
