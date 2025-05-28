@@ -1,27 +1,41 @@
-package fr.ensim.android.artgallery.ui.theme.api
+package fr.ensim.android.artgallery.api
+
+import fr.ensim.android.artgallery.ui.theme.api.JocondeService
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 
 object ApiClients {
-    // TMDb Client
-    private val tmdbRetrofit = Retrofit.Builder()
-        .baseUrl(ApiConstants.TMDB_API_BASE_URL)
+
+    private const val JOCONDE_BASE_URL = "https://data.culture.gouv.fr/api/records/1.0/"
+
+    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    private val httpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .build()
+
+    private val jocondeRetrofit = Retrofit.Builder()
+        .baseUrl(JOCONDE_BASE_URL)
+        .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val tmdbService: TMDbService = tmdbRetrofit.create(TMDbService::class.java)
+    val jocondeService: JocondeService = jocondeRetrofit.create(JocondeService::class.java)
 
-    // Deezer Client
-    private val deezerRetrofit = Retrofit.Builder()
-        .baseUrl(ApiConstants.DEEZER_API_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    // Vos autres services existants...
+    val deezerService: DeezerService by lazy {
+        // Votre implémentation existante
+    }
 
-    val deezerService: DeezerService = deezerRetrofit.create(DeezerService::class.java)
+    val merimeeService: MerimeeService by lazy {
+        // Votre implémentation existante
+    }
 
-    // Mérimée Client
-    private val merimeeRetrofit = Retrofit.Builder()
-        .baseUrl(ApiConstants.MERIMEE_API_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    val merimeeService: MerimeeService = merimeeRetrofit.create(MerimeeService::class.java)
+    val tmDbService: TMDbService by lazy {
+        // Votre implémentation existante
+    }
 }

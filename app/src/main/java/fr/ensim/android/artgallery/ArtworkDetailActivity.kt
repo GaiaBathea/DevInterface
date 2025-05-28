@@ -1,93 +1,368 @@
 package com.example.artgallery
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest as CoilImageRequest
+import com.android.volley.toolbox.ImageRequest as VolleyImageRequest
+import fr.ensim.android.artgallery.ui.theme.model.Artwork
+import fr.ensim.android.artgallery.ui.theme.model.ArtworkType
 
-import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.artgallery.adapter.ArtworkAdapter
-import com.example.artgallery.viewmodel.ArtworkDetailViewModel
-
-class ArtworkDetailActivity : AppCompatActivity() {
-    private lateinit var viewModel: ArtworkDetailViewModel
-    private lateinit var relatedWorksAdapter: ArtworkAdapter
-
-    private lateinit var artworkImage: ImageView
-    private lateinit var titleText: TextView
-    private lateinit var artistText: TextView
-    private lateinit var dateText: TextView
-    private lateinit var descriptionText: TextView
-    private lateinit var artistBioText: TextView
-    private lateinit var relatedWorksRecyclerView: RecyclerView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_artwork_detail)
-
-        val artworkId = intent.getLongExtra(EXTRA_ARTWORK_ID, -1)
-        if (artworkId == -1L) {
-            finish()
-            return
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ArtworkDetailScreen(
+    artwork: Artwork?,
+    relatedArtworks: List<Artwork>,
+    isLoading: Boolean,
+    error: String?,
+    onBackClick: () -> Unit,
+    onRelatedArtworkClick: (String) -> Unit,
+    onClearError: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(artwork?.title ?: "Détail de l'œuvre") },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Retour")
+                    }
+                }
+            )
         }
+    ) { paddingValues ->
+        when {
+            isLoading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
 
-        viewModel = ViewModelProvider(this)[ArtworkDetailViewModel::class.java]
-        viewModel.loadArtworkDetails(artworkId)
+            error != null -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = error,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = onClearError) {
+                        Text("Réessayer")
+                    }
+                }
+            }
 
-        findViews()
-        setupRelatedWorksRecyclerView()
-        observeData()
+            artwork != null -> {
+                ArtworkDetailContent(
+                    artwork = artwork,
+                    relatedArtworks = relatedArtworks,
+                    onRelatedArtworkClick = onRelatedArtworkClick,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                )
+            }
+        }
     }
+}
 
-    private fun findViews() {
-        artworkImage = findViewById(R.id.artwork_image)
-        titleText = findViewById(R.id.artwork_title)
-        artistText = findViewById(R.id.artist_name)
-        dateText = findViewById(R.id.creation_date)
-        descriptionText = findViewById(R.id.artwork_description)
-        artistBioText = findViewById(R.id.artist_bio)
-        relatedWorksRecyclerView = findViewById(R.id.related_works_recycler_view)
+@Composable
+fun ArtworkDetailContent(
+    artwork: Artwork,
+    relatedArtworks: List<Artwork>,
+    onRelatedArtworkClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Image principale
+        item {
+            AsyncImage(
+                model = CoilImageRequest.Builder(LocalContext.current)
+                    .data(artwork.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = artwork.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
+
+        // Titre et informations principales
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = artwork.title,
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = artwork.artist,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    artwork.date?.let { date ->
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = date,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    artwork.period?.let { period ->
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Période: $period",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    // Informations techniques
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        // Badge de type
+                        Surface(
+                            color = MaterialTheme.colorScheme.primaryContainer,
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
+                            Text(
+                                text = when (artwork.type) {
+                                    ArtworkType.PAINTING -> "Peinture"
+                                    ArtworkType.SCULPTURE -> "Sculpture"
+                                    ArtworkType.ARCHITECTURE -> "Architecture"
+                                    ArtworkType.PHOTO -> "Photographie"
+                                    ArtworkType.DECORATIVE_ART -> "Arts décoratifs"
+                                    ArtworkType.FILM -> "Film"
+                                    ArtworkType.SERIES -> "Série"
+                                    ArtworkType.MUSIC -> "Musique"
+                                    ArtworkType.OTHER -> "Autre"
+                                },
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        }
+
+                        artwork.theme?.let { theme ->
+                            Surface(
+                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                shape = RoundedCornerShape(16.dp)
+                            ) {
+                                Text(
+                                    text = theme,
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
+                            }
+                        }
+                    }
+
+                    // Informations supplémentaires
+                    artwork.technique?.let { technique ->
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Technique: $technique",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    artwork.dimensions?.let { dimensions ->
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Dimensions: $dimensions",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    artwork.location?.let { location ->
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Localisation: $location",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        }
+
+        // Description de l'œuvre
+        artwork.description?.let { description ->
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(
+                            text = "À propos de l'œuvre",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = description,
+                            style = MaterialTheme.typography.bodyMedium,
+                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
+                        )
+                    }
+                }
+            }
+        }
+
+        // Biographie de l'artiste
+        artwork.artistBiography?.let { biography ->
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Text(
+                            text = "À propos de ${artwork.artist}",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = biography,
+                            style = MaterialTheme.typography.bodyMedium,
+                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
+                        )
+                    }
+                }
+            }
+        }
+
+        // Œuvres associées
+        if (relatedArtworks.isNotEmpty()) {
+            item {
+                Text(
+                    text = "Œuvres associées",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            item {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp)
+                ) {
+                    items(relatedArtworks) { relatedArtwork ->
+                        RelatedArtworkCard(
+                            artwork = relatedArtwork,
+                            onClick = { onRelatedArtworkClick(relatedArtwork.id) }
+                        )
+                    }
+                }
+            }
+        }
     }
+}
 
-    private fun setupRelatedWorksRecyclerView() {
-        relatedWorksRecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        relatedWorksAdapter = ArtworkAdapter { artwork ->
-            // Just reload this activity with the new artwork ID
-            val intent = intent
-            intent.putExtra(EXTRA_ARTWORK_ID, artwork.id)
-            finish()
-            startActivity(intent)
+@Composable
+fun RelatedArtworkCard(
+    artwork: Artwork,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .width(150.dp)
+            .clickable { onClick() },
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column {
+            AsyncImage(
+                model = CoilImageRequest.Builder(LocalContext.current)
+                    .data(artwork.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = artwork.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            Column(
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text(
+                    text = artwork.title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Text(
+                    text = artwork.artist,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
-        relatedWorksRecyclerView.adapter = relatedWorksAdapter
-    }
-
-    private fun observeData() {
-        viewModel.artwork.observe(this) { artwork ->
-            titleText.text = artwork.title
-            artistText.text = artwork.artist.name
-            dateText.text = artwork.year.toString()
-            descriptionText.text = artwork.description
-
-            Glide.with(this)
-                .load(artwork.imageUrl)
-                .placeholder(R.drawable.placeholder_image)
-                .into(artworkImage)
-        }
-
-        viewModel.artistBio.observe(this) { bio ->
-            artistBioText.text = bio
-        }
-
-        viewModel.relatedWorks.observe(this) { relatedWorks ->
-            relatedWorksAdapter.submitList(relatedWorks)
-        }
-    }
-
-    companion object {
-        const val EXTRA_ARTWORK_ID = "artwork_id"
     }
 }

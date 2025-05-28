@@ -1,14 +1,15 @@
 package fr.ensim.android.artgallery.ui.theme
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import fr.ensim.android.artgallery.ui.theme.api.ApiImportManager
-import fr.ensim.android.artgallery.ui.theme.db.ArtDatabase
 import fr.ensim.android.artgallery.ui.theme.repository.ArtRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
+@HiltAndroidApp
 class ArtGalleryApplication : Application() {
     // No need to cancel this scope as it'll be torn down with the process
     private val applicationScope = CoroutineScope(SupervisorJob())

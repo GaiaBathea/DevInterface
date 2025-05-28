@@ -1,5 +1,6 @@
 package fr.ensim.android.artgallery.ui.theme.api
 
+import fr.ensim.android.artgallery.api.ApiClients
 import fr.ensim.android.artgallery.ui.theme.db.dao.ArtistDao
 import fr.ensim.android.artgallery.ui.theme.db.dao.ArtworkDao
 import fr.ensim.android.artgallery.ui.theme.db.entity.ArtistEntity
