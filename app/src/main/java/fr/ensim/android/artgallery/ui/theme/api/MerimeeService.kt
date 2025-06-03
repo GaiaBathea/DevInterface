@@ -1,6 +1,8 @@
 package fr.ensim.android.artgallery.ui.theme.api
 
 import fr.ensim.android.artgallery.ui.theme.api.data.dMerimee.MerimeeResponse
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface MerimeeService {
     @GET(".")

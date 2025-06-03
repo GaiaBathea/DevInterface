@@ -1,9 +1,6 @@
 package fr.ensim.android.artgallery.ui.theme.db.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     tableName = "artworks",

@@ -1,12 +1,7 @@
 package fr.ensim.android.artgallery.ui.theme.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import fr.ensim.android.artgallery.ui.screens.Artwork
-
-@Entity(tableName = "artworks")
 data class Artwork(
-    @PrimaryKey val id: String,
+    val id: String,
     val title: String,
     val artist: String,
     val imageUrl: String?,
@@ -28,14 +23,4 @@ enum class ArtworkType {
 
 enum class ArtworkSource {
     JOCONDE, DEEZER, MERIMEE, TMDB
-}
-
-val homeArtworks = artworks.map { artwork ->
-    Artwork(
-        id = artwork.id.toString(),
-        title = artwork.title ?: "Sans titre",
-        artist = artwork.artist ?: "Artiste inconnu",
-        imageUrl = artwork.imageUrl ?: "",
-        height = (150..300).random() // Pour l'effet staggered
-    )
 }

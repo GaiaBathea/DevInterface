@@ -1,24 +1,23 @@
 package fr.ensim.android.artgallery.ui.theme.db
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import android.content.Context
 import fr.ensim.android.artgallery.ui.theme.db.dao.ArtistDao
 import fr.ensim.android.artgallery.ui.theme.db.dao.ArtworkDao
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtistEntity
+import fr.ensim.android.artgallery.ui.theme.db.entity.ArtworkEntity
 import fr.ensim.android.artgallery.ui.theme.db.typeconverters.Converters
-import fr.ensim.android.artgallery.ui.theme.model.Artist
-import fr.ensim.android.artgallery.ui.theme.model.Artwork
 
 @Database(
-    entities = [Artwork::class, Artist::class],
+    entities = [ArtworkEntity::class, ArtistEntity::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class ArtDataBase : RoomDatabase() {
-
     abstract fun artworkDao(): ArtworkDao
     abstract fun artistDao(): ArtistDao
 
