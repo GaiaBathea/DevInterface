@@ -1,6 +1,3 @@
-
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package fr.ensim.android.artgallery.ui.screens
 
 import androidx.compose.foundation.Image
@@ -12,12 +9,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,9 +59,8 @@ fun HomeScreen(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White
-                )
+                backgroundColor = Color.White,
+                contentColor = Color.Black
             )
         },
         bottomBar = {
@@ -138,7 +134,7 @@ fun SearchBar(
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent,
-            containerColor = Color(0xFFF5F5F5)
+            backgroundColor = Color(0xFFF5F5F5)
         ),
         singleLine = true
     )
@@ -156,7 +152,7 @@ fun ArtworkCard(
             .height(artwork.height.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = 2.dp
     ) {
         AsyncImage(
             model = artwork.imageUrl,
@@ -175,11 +171,11 @@ fun BottomNavigationBar(
     onSearchClick: () -> Unit,
     onEmailClick: () -> Unit
 ) {
-    NavigationBar(
-        containerColor = Color(0xFF1A1A1A),
+    BottomNavigation(
+        backgroundColor = Color(0xFF1A1A1A),
         contentColor = Color.White
     ) {
-        NavigationBarItem(
+        BottomNavigationItem(
             icon = {
                 Icon(
                     Icons.Default.Settings,
@@ -191,7 +187,7 @@ fun BottomNavigationBar(
             onClick = onSettingsClick
         )
 
-        NavigationBarItem(
+        BottomNavigationItem(
             icon = {
                 Box(
                     modifier = Modifier
@@ -211,7 +207,7 @@ fun BottomNavigationBar(
             onClick = onSearchClick
         )
 
-        NavigationBarItem(
+        BottomNavigationItem(
             icon = {
                 Icon(
                     Icons.Default.Email,

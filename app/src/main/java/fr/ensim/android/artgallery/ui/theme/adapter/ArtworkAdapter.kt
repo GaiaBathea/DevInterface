@@ -1,6 +1,5 @@
 package fr.ensim.android.artgallery.ui.theme.adapter
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,7 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material3.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +29,6 @@ import com.android.volley.toolbox.ImageRequest as VolleyImageRequest
 import fr.ensim.android.artgallery.ui.theme.model.Artwork
 import fr.ensim.android.artgallery.ui.theme.model.ArtworkType
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtworkGalleryScreen(
     artworks: List<Artwork>,
@@ -64,7 +62,7 @@ fun ArtworkGalleryScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+                backgroundColor = MaterialTheme.colors.error.copy(alpha = 0.12f)
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -72,7 +70,7 @@ fun ArtworkGalleryScreen(
                 ) {
                     Text(
                         text = errorMessage,
-                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        color = MaterialTheme.colors.error,
                         modifier = Modifier.weight(1f)
                     )
                     TextButton(onClick = onClearError) {
@@ -129,7 +127,6 @@ fun ArtworkGalleryScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     query: String,
@@ -152,7 +149,6 @@ fun SearchBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtworkCard(
     artwork: Artwork,
@@ -163,7 +159,7 @@ fun ArtworkCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = 4.dp
     ) {
         Column {
             // Image
@@ -186,7 +182,7 @@ fun ArtworkCard(
             ) {
                 Text(
                     text = artwork.title,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.subtitle1,
                     fontWeight = FontWeight.Bold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -194,8 +190,8 @@ fun ArtworkCard(
 
                 Text(
                     text = artwork.artist,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -203,22 +199,22 @@ fun ArtworkCard(
                 artwork.date?.let { date ->
                     Text(
                         text = date,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        style = MaterialTheme.typography.caption,
+                        color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
                     )
                 }
 
                 // Badge de type
                 Spacer(modifier = Modifier.height(8.dp))
                 Surface(
-                    color = MaterialTheme.colorScheme.primaryContainer,
+                    color = MaterialTheme.colors.primary.copy(alpha = 0.12f),
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Text(
                         text = artwork.type.name,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        style = MaterialTheme.typography.caption,
+                        color = MaterialTheme.colors.primary
                     )
                 }
             }

@@ -1,6 +1,6 @@
 package fr.ensim.android.artgallery.ui.theme.api
 
-import androidx.room.Query
+import retrofit2.http.Query
 import com.android.volley.Response
 import fr.ensim.android.artgallery.ui.theme.api.data.joconde.JocondeResponse
 import retrofit2.http.GET

@@ -1,3 +1,4 @@
+// build.gradle (Module: app)
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,8 +8,8 @@ plugins {
 
 kapt {
     correctErrorTypes = true
+    mapDiagnosticLocations = true
 }
-
 
 android {
     namespace = "fr.ensim.android.artgallery"
@@ -43,9 +44,21 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.8"
+    }
 }
 
 dependencies {
+    // CORRECTION : Mise à jour de kotlinx-metadata-jvm pour compatibilité avec Hilt 2.50
+    subprojects {
+        configurations.all {
+            resolutionStrategy {
+                force("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0")
+            }
+        }
+    }
+
     // Retrofit et coroutines
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
@@ -59,42 +72,37 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+
+    // CHANGÉ : Material classique au lieu de Material 3
+    implementation("androidx.compose.material:material:1.5.4")
+
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
-    implementation("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0")
 
-    // Room - ATTENTION : conflits potentiels ici
+    // Room - CORRIGÉ : une seule déclaration kapt
     implementation(libs.androidx.room.runtime)
-    kapt(libs.androidx.room.compiler)
-    // Retirez androidx.room.common.jvm et androidx.room.compiler des implementation
-    // androidx.room.compiler doit être kapt, pas implementation
     kapt(libs.androidx.room.compiler)
 
     implementation(libs.volley)
     implementation(libs.firebase.crashlytics.buildtools)
 
-    // Navigation Compose - CORRIGÉ
+    // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.5")
-    // Retiré : libs.androidx.navigation.compose.jvmstubs
-
-    // Retiré de implementation car c'est pour les tests :
-    // implementation(libs.androidx.espresso.core)
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.50")
-    kapt("com.google.dagger:hilt-compiler:2.50")
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core) // Déplacé ici
+    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 

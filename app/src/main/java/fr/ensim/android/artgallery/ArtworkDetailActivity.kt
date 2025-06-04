@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +24,6 @@ import com.android.volley.toolbox.ImageRequest as VolleyImageRequest
 import fr.ensim.android.artgallery.ui.theme.model.Artwork
 import fr.ensim.android.artgallery.ui.theme.model.ArtworkType
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArtworkDetailScreen(
     artwork: Artwork?,
@@ -68,8 +67,8 @@ fun ArtworkDetailScreen(
                 ) {
                     Text(
                         text = error,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.error
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = onClearError) {
@@ -124,14 +123,14 @@ fun ArtworkDetailContent(
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                elevation = 4.dp
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
                         text = artwork.title,
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = MaterialTheme.typography.h5,
                         fontWeight = FontWeight.Bold
                     )
 
@@ -139,16 +138,16 @@ fun ArtworkDetailContent(
 
                     Text(
                         text = artwork.artist,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.primary
+                        style = MaterialTheme.typography.h6,
+                        color = MaterialTheme.colors.primary
                     )
 
                     artwork.date?.let { date ->
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = date,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style = MaterialTheme.typography.body1,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
                         )
                     }
 
@@ -156,8 +155,8 @@ fun ArtworkDetailContent(
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "Période: $period",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
                         )
                     }
 
@@ -169,7 +168,7 @@ fun ArtworkDetailContent(
                     ) {
                         // Badge de type
                         Surface(
-                            color = MaterialTheme.colorScheme.primaryContainer,
+                            color = MaterialTheme.colors.primary.copy(alpha = 0.12f),
                             shape = RoundedCornerShape(16.dp)
                         ) {
                             Text(
@@ -185,21 +184,21 @@ fun ArtworkDetailContent(
                                     ArtworkType.OTHER -> "Autre"
                                 },
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                                style = MaterialTheme.typography.caption,
+                                color = MaterialTheme.colors.primary
                             )
                         }
 
                         artwork.theme?.let { theme ->
                             Surface(
-                                color = MaterialTheme.colorScheme.secondaryContainer,
+                                color = MaterialTheme.colors.secondary.copy(alpha = 0.12f),
                                 shape = RoundedCornerShape(16.dp)
                             ) {
                                 Text(
                                     text = theme,
                                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                    style = MaterialTheme.typography.caption,
+                                    color = MaterialTheme.colors.secondary
                                 )
                             }
                         }
@@ -210,8 +209,8 @@ fun ArtworkDetailContent(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = "Technique: $technique",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
                         )
                     }
 
@@ -219,8 +218,8 @@ fun ArtworkDetailContent(
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "Dimensions: $dimensions",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
                         )
                     }
 
@@ -228,8 +227,8 @@ fun ArtworkDetailContent(
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "Localisation: $location",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
                         )
                     }
                 }
@@ -241,14 +240,14 @@ fun ArtworkDetailContent(
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    elevation = 4.dp
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
                             text = "À propos de l'œuvre",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = MaterialTheme.typography.h6,
                             fontWeight = FontWeight.Bold
                         )
 
@@ -256,8 +255,7 @@ fun ArtworkDetailContent(
 
                         Text(
                             text = description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
+                            style = MaterialTheme.typography.body2
                         )
                     }
                 }
@@ -269,14 +267,14 @@ fun ArtworkDetailContent(
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    elevation = 4.dp
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Text(
                             text = "À propos de ${artwork.artist}",
-                            style = MaterialTheme.typography.titleLarge,
+                            style = MaterialTheme.typography.h6,
                             fontWeight = FontWeight.Bold
                         )
 
@@ -284,8 +282,7 @@ fun ArtworkDetailContent(
 
                         Text(
                             text = biography,
-                            style = MaterialTheme.typography.bodyMedium,
-                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
+                            style = MaterialTheme.typography.body2
                         )
                     }
                 }
@@ -297,7 +294,7 @@ fun ArtworkDetailContent(
             item {
                 Text(
                     text = "Œuvres associées",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.h6,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -329,7 +326,7 @@ fun RelatedArtworkCard(
         modifier = modifier
             .width(150.dp)
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = 4.dp
     ) {
         Column {
             AsyncImage(
@@ -349,7 +346,7 @@ fun RelatedArtworkCard(
             ) {
                 Text(
                     text = artwork.title,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.body2,
                     fontWeight = FontWeight.Bold,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -357,8 +354,8 @@ fun RelatedArtworkCard(
 
                 Text(
                     text = artwork.artist,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.caption,
+                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
