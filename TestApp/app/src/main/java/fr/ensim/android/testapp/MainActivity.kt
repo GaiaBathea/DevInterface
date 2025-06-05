@@ -1,6 +1,6 @@
 package fr.ensim.android.testapp
 //Ajout de HomeScreen
-import HomeScreen
+import fr.ensim.android.testapp.ui.screen.HomeScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,7 +19,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.FirebaseApp
-import fr.ensim.android.testapp.ui.theme.ArtDetailScreen
+import fr.ensim.android.testapp.ui.screen.ArtDetailScreen
+import fr.ensim.android.testapp.ui.screen.ConnexionScreen
+import fr.ensim.android.testapp.ui.screen.InscriptionScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

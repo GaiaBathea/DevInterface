@@ -1,63 +1,75 @@
-package fr.ensim.android.testapp
+package fr.ensim.android.testapp.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import fr.ensim.android.testapp.AuthService
 import fr.ensim.android.testapp.ui.theme.TestAppTheme
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun ConnexionScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
-
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
     val fieldWidth = 280.dp
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp)
-    ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Close button in top-right
+        IconButton(
+            onClick = {
+                navController.navigate("home") {
+                    popUpTo("connexion") { inclusive = true }
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Fermer"
+            )
+        }
+
         Column(
-            modifier = Modifier.align(Alignment.TopCenter),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp, vertical = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // === Titre + lien "Créer un compte" ===
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = "Connexion",
-                    style = MaterialTheme.typography.headlineMedium,
-                    textAlign = TextAlign.Center
-                )
+            Text(
+                text = "Connexion",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Bold,
+            )
 
-                Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    text = "Pas de compte ? Créez-en un",
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .clickable { navController.navigate("signup") }
-                        .padding(bottom = 24.dp)
-                )
-            }
+            Text(
+                text = "Pas de compte ? Créez-en un",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .clickable { navController.navigate("signup") }
+                    .padding(bottom = 24.dp)
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // === Email + Mot de passe ===
             Column(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.width(fieldWidth)
@@ -87,7 +99,6 @@ fun ConnexionScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // === Séparateur + boutons sociaux ===
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -120,8 +131,6 @@ fun ConnexionScreen(navController: NavController) {
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            var errorMessage by remember { mutableStateOf<String?>(null) }
-            var isLoading by remember { mutableStateOf(false) }
 
             Button(
                 onClick = {
@@ -137,7 +146,8 @@ fun ConnexionScreen(navController: NavController) {
                                 launchSingleTop = true
                             }
                         } else {
-                            errorMessage = result.exceptionOrNull()?.localizedMessage ?: "Échec de la connexion"
+                            errorMessage =
+                                result.exceptionOrNull()?.localizedMessage ?: "Échec de la connexion"
                         }
                     }
                 },
@@ -155,14 +165,10 @@ fun ConnexionScreen(navController: NavController) {
     }
 }
 
-
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun ConnexionScreenPreview() {
-    TestAppTheme { // Si tu as un thème custom, sinon tu peux l’enlever
+    TestAppTheme {
         ConnexionScreen(navController = rememberNavController())
     }
 }
