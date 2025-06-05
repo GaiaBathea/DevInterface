@@ -122,8 +122,8 @@ fun InscriptionScreen(navController: NavController) {
                 val result = AuthService.registerUser(email, password)
                 if (result.isSuccess) {
                     Toast.makeText(context, "Inscription réussie", Toast.LENGTH_SHORT).show()
-                    navController.navigate("home"){
-                        popUpTo("connexion") { inclusive = true }
+                    navController.navigate("home") {
+                        popUpTo("signup") { inclusive = true }
                         launchSingleTop = true
                     }
                 } else {

@@ -27,6 +27,9 @@ class MainActivity : ComponentActivity() {
             TestAppTheme {
                 val navController = rememberNavController()
 
+                AppNavigation()
+
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -47,6 +50,23 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@Composable
+fun AppNavigation() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "connexion") {
+        composable("connexion") {
+            ConnexionScreen(navController)
+        }
+        composable("signup") {
+            InscriptionScreen(navController)
+        }
+        composable("home") {
+            HomeScreen(navController)
+        }
+    }
+}
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
