@@ -2,6 +2,7 @@ package fr.ensim.android.testapp.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
@@ -28,7 +29,7 @@ fun ConnexionScreen(navController: NavController) {
     val fieldWidth = 280.dp
 
     Box(modifier = Modifier.fillMaxSize()) {
-        // Close button in top-right
+        // Bouton de fermeture en haut à droite
         IconButton(
             onClick = {
                 navController.navigate("home") {
@@ -45,6 +46,7 @@ fun ConnexionScreen(navController: NavController) {
             )
         }
 
+        // Contenu principal
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -54,7 +56,7 @@ fun ConnexionScreen(navController: NavController) {
             Text(
                 text = "Connexion",
                 fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -161,6 +163,18 @@ fun ConnexionScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(it, color = MaterialTheme.colorScheme.error)
             }
+        }
+
+        // Petit bouton rond en bas à droite vers MonBoardScreen
+        FloatingActionButton(
+            onClick = { navController.navigate("monBoard") },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(24.dp),
+            shape = CircleShape,
+            containerColor = MaterialTheme.colorScheme.primary
+        ) {
+            // Laisse vide ou ajoute une icône si tu veux
         }
     }
 }

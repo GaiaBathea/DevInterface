@@ -21,7 +21,10 @@ import androidx.navigation.navArgument
 import com.google.firebase.FirebaseApp
 import fr.ensim.android.testapp.ui.screen.ArtDetailScreen
 import fr.ensim.android.testapp.ui.screen.ConnexionScreen
+import fr.ensim.android.testapp.ui.screen.DejaVuScreen
 import fr.ensim.android.testapp.ui.screen.InscriptionScreen
+import fr.ensim.android.testapp.ui.screen.ListeAScreen
+import fr.ensim.android.testapp.ui.screen.MonBoardScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +53,7 @@ class MainActivity : ComponentActivity() {
                         composable("signup") {
                             InscriptionScreen(navController= navController) }
 
+
                         composable(
                             "detail/{image}/{title}/{artist}/{year}",
                             arguments = listOf(
@@ -67,6 +71,10 @@ class MainActivity : ComponentActivity() {
                                 year = backStackEntry.arguments?.getString("year") ?: ""
                             )
                         }
+
+                        composable("monboard") { MonBoardScreen(navController) }
+                        composable("dejavu") { DejaVuScreen(navController) }
+                        composable("listea") { ListeAScreen(navController) }
 
                     }
                 }
