@@ -13,10 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import fr.ensim.android.testapp.ui.theme.TestAppTheme
 import androidx.compose.material3.Surface
+import androidx.navigation.NavType
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.google.firebase.FirebaseApp
+import fr.ensim.android.testapp.ui.theme.ArtDetailScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,25 @@ class MainActivity : ComponentActivity() {
 
                         composable("signup") {
                             InscriptionScreen(navController= navController) }
+
+                        composable(
+                            "detail/{image}/{title}/{artist}/{year}",
+                            arguments = listOf(
+                                navArgument("image") { type = NavType.StringType },
+                                navArgument("title") { type = NavType.StringType },
+                                navArgument("artist") { type = NavType.StringType },
+                                navArgument("year") { type = NavType.StringType }
+                            )
+                        ) { backStackEntry ->
+                            ArtDetailScreen(
+                                navController = navController,
+                                imageName = backStackEntry.arguments?.getString("image") ?: "",
+                                title = backStackEntry.arguments?.getString("title") ?: "",
+                                artist = backStackEntry.arguments?.getString("artist") ?: "",
+                                year = backStackEntry.arguments?.getString("year") ?: ""
+                            )
+                        }
+
                     }
                 }
             }
