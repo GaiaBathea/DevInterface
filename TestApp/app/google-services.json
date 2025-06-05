@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "421490149315",
+    "project_id": "testapp-dc184",
+    "storage_bucket": "testapp-dc184.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421490149315:android:39f331709c309d87d61f76",
+        "android_client_info": {
+          "package_name": "fr.ensim.android.testapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCokE6yl9pAnxsrdQAuOKJLfx03swh1Vng"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
