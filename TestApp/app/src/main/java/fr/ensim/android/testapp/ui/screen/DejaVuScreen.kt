@@ -33,7 +33,7 @@ fun DejaVuScreen(navController: NavController) {
         IconButton(
             onClick = {
                 navController.navigate("monboard") {
-                    popUpTo("listea") { inclusive = true }
+                    popUpTo("dejavu") { inclusive = true }
                 }
             },
             modifier = Modifier
