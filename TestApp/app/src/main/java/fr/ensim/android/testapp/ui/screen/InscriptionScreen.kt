@@ -125,7 +125,7 @@ fun InscriptionScreen(navController: NavController) {
                         val result = AuthService.registerUser(email, password)
                         isLoading = false
                         if (result.isSuccess) {
-                            navController.navigate("home") {
+                            navController.navigate("monboard") {
                                 popUpTo("signup") { inclusive = true }
                                 launchSingleTop = true
                             }

@@ -5,8 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -24,15 +27,35 @@ fun DejaVuScreen(navController: NavController) {
     val photoImages = listOf("art_piece_6", "art_piece_7", "art_piece_8", "art_piece_9")
     val architectureImages = listOf("art_piece_10", "art_piece_11", "art_piece_1")
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        CarouselSectionD(title = "Cinématographie", imageList = cinemaImages, navController)
-        CarouselSectionD(title = "Œuvre", imageList = artImages, navController)
-        CarouselSectionD(title = "Photographie", imageList = photoImages, navController)
-        CarouselSectionD(title = "Architecture", imageList = architectureImages, navController)
+    Box(modifier = Modifier.fillMaxSize()) {
+
+        // Bouton de fermeture
+        IconButton(
+            onClick = {
+                navController.navigate("monboard") {
+                    popUpTo("listea") { inclusive = true }
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Fermer"
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            CarouselSectionD(title = "Cinématographie", imageList = cinemaImages, navController = navController)
+            CarouselSectionD(title = "Œuvre", imageList = artImages, navController = navController)
+            CarouselSectionD(title = "Photographie", imageList = photoImages, navController = navController)
+            CarouselSectionD(title = "Architecture", imageList = architectureImages, navController = navController)
+        }
     }
 }
 
@@ -47,7 +70,7 @@ fun CarouselSectionD(title: String, imageList: List<String>, navController: NavC
 
         LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             items(imageList) { imageName ->
-                ImageCardL(imageName = imageName) {
+                ImageCardD(imageName = imageName) {
                     navController.navigate("detail/$imageName/Title/Author/Year")
                 }
             }
@@ -75,7 +98,6 @@ fun ImageCardD(imageName: String, onClick: () -> Unit) {
         Text("Image \"$imageName\" introuvable", modifier = Modifier.padding(8.dp))
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

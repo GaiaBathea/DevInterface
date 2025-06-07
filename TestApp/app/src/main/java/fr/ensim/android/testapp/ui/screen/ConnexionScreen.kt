@@ -143,7 +143,7 @@ fun ConnexionScreen(navController: NavController) {
                         val result = AuthService.loginUser(email, password)
                         isLoading = false
                         if (result.isSuccess) {
-                            navController.navigate("home") {
+                            navController.navigate("monboard") {
                                 popUpTo("connexion") { inclusive = true }
                                 launchSingleTop = true
                             }
