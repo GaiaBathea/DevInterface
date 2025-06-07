@@ -1,9 +1,13 @@
 package fr.ensim.android.testapp.ui.screen
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,44 +19,63 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun MonBoardScreen(navController: NavController) {
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFCCE7FF)) // couleur de fond personnalisée
+            .background(Color(0xFFCCE7FF))
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
+        // Ligne du haut avec bouton mail à gauche
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = { navController.navigate("inbox") }) {
+                Icon(
+                    imageVector = Icons.Filled.Email,
+                    contentDescription = "Boîte de réception"
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(text = "Mon Board", color = Color.Black)
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Contenu principal centré
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 32.dp),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Bouton Mon Board (pas de navigation pour l'instant)
             Button(
-                onClick = { /* TODO: Ajouter une navigation ou action plus tard */ },
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                onClick = { /* TODO: action */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
             ) {
                 Text("Mon Board")
             }
-
-            // Bouton Déjà Vu
             Button(
                 onClick = { navController.navigate("dejavu") },
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
             ) {
                 Text("Déjà Vu")
             }
-
-            // Bouton Liste d'attente
             Button(
                 onClick = { navController.navigate("listea") },
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
             ) {
                 Text("Liste d’attente")
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
